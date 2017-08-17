@@ -11,13 +11,18 @@ var article1={
     date:'15 sep 2000',
     content:'This is the content of article one'
 };
-
+function createht(data)
+{
+    var title=data.title;
+    var heading=data.heading;
+    var date=data.date;
+    var content=data.content;
 var htmltemp=`
 <!DOCTYPE html>
 <html>
      <head>
         <title>
-            
+            ${title}
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/ui/style.css" rel="stylesheet" />
@@ -27,9 +32,9 @@ var htmltemp=`
        <a href="/">Home</a>
     </div>
     <hr/>
-    <h1></h1>
+    <h1>${heading}</h1>
     <div>
-        
+        ${content}
     </div>
         
     <div>
@@ -40,7 +45,7 @@ var htmltemp=`
    
 </html>
 
-`;
+`; return htmltemp}
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
@@ -54,7 +59,7 @@ app.get('/article-two', function (req, res) {
 });
 
 app.get('/article-one', function (req, res) {
-  res.sendFile(path.join(__dirname,'ui' ,'article1.html'));
+  res.send(createht(article1));
 });
 
 app.get('/ui/style.css', function (req, res) {
