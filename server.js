@@ -11,6 +11,18 @@ var article1={
     date:'15 sep 2000',
     content:'This is the content of article one'
 };
+var article2={
+    title:'Article two | Santosh Jain',
+    heading:'Article two',
+    date:'15 oct 2000',
+    content:'This is the content of article two'
+};
+var article3={
+    title:'Article three | Santosh Jain',
+    heading:'Article three',
+    date:'15 sep 2020',
+    content:'This is the content of article three'
+};
 function createht(data)
 {
     var title=data.title;
@@ -51,11 +63,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/article-three', function (req, res) {
-  res.sendFile(path.join(__dirname,'ui','article3.html'));
+    res.send(createht(article3));
 });
 
 app.get('/article-two', function (req, res) {
-  res.sendFile(path.join(__dirname,'ui','article2.html'));
+    res.send(createht(article2));
 });
 
 app.get('/article-one', function (req, res) {
