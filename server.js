@@ -12,6 +12,35 @@ var article1={
     content:'This is the content of article one'
 };
 
+var htmltemp=`
+<!DOCTYPE html>
+<html>
+     <head>
+        <title>
+            
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/ui/style.css" rel="stylesheet" />
+    </head>
+   <div class="cont">
+    <div>
+       <a href="/">Home</a>
+    </div>
+    <hr/>
+    <h1></h1>
+    <div>
+        
+    </div>
+        
+    <div>
+        <p></p>
+    </div>
+    </div>
+    
+   
+</html>
+
+`;
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
