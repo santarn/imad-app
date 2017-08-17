@@ -46,11 +46,11 @@ var htmltemp=`
     <hr/>
     <h1>${heading}</h1>
     <div>
-        ${content}
+        ${date}
     </div>
         
     <div>
-        <p></p>
+        <p>${content}</p>
     </div>
     </div>
     
