@@ -6,18 +6,18 @@ var app = express();
 app.use(morgan('combined'));
 
 var articles={ 
-article1:{
+'article-one':{
     title:'Article one | Santosh Jain',
     heading:'Article One',
     date:'15 sep 2000',
     content:'This is the content of article one'
-}, article2:{
+}, 'article-two':{
     title:'Article two | Santosh Jain',
     heading:'Article two',
     date:'15 oct 2000',
     content:'This is the content of article two'
 },
- article3:{
+ 'article-three':{
     title:'Article three | Santosh Jain',
     heading:'Article three',
     date:'15 sep 2020',
@@ -63,17 +63,11 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
-app.get('/article-three', function (req, res) {
-    res.send(createht(article3));
+app.get('/:articleNames', function (req, res) {
+    var articleNames=req.params.articleNames;
+    res.send(createht(articles[articleNames]));
 });
 
-app.get('/article-two', function (req, res) {
-    res.send(createht(article2));
-});
-
-app.get('/article-one', function (req, res) {
-  res.send(createht(article1));
-});
 
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
