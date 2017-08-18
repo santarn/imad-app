@@ -67,8 +67,11 @@ app.get('/:articleNames', function (req, res) {
     var articleNames=req.params.articleNames;
     res.send(createht(articles[articleNames]));
 });
-
-
+var cou=0;
+app.get('/counter',function(req,res){
+    cou=cou+1;
+    res.send(cou.toString());
+});
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
 });
