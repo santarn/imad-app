@@ -19,10 +19,16 @@ button.onclick=function(){
     
 };
 
-var namel=document.getElementById('name');
+
 var subm=document.getElementById('sub');
 subm.onclick=function(){
-    var names=['name1','name2','name3','name4'];
+     var request=new XMLHttpRequest();
+    request.onreadystatechange=function(){
+      if(request.readyState==XMLHttpRequest.DONE)
+      {
+          if(request.status==200)
+          { var names=request.responseText;
+          names=JSON.parse(names);
 var list='';
 for(var i=0;i<names.length;i++)
 {
@@ -31,4 +37,14 @@ for(var i=0;i<names.length;i++)
     ul.innerHTML=list;
     
 }
+          }
+      }
+        
+    };
+var namel=document.getElementById('name');
+var name=namel.value;    
+   request.open('GET','http://santoshjain2198.imad.hasura-app.io/submit?name='+name,true);
+   request.send(null);
+   
+   
 };
