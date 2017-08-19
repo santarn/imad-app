@@ -68,6 +68,15 @@ app.get('/counter', function (req, res) {
    counter=counter+1;
     res.send(counter.toString());
 });
+
+var names=[];
+app.get('/submit/:name',function(req,res){
+    var name=req.params.name;
+    names.push(name);
+    req.send(JSON.stringify(names));
+    
+});
+
 app.get('/:articleNames', function (req, res) {
     var articleNames=req.params.articleNames;
     res.send(createht(articles[articleNames]));
