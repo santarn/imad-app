@@ -24,7 +24,7 @@ var articles={
     date:'15 sep 2020',
     content:'This is the content of article three'
 }
-};
+
 function createht(data)
 {
     var title=data.title;
