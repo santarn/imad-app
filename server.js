@@ -104,15 +104,16 @@ app.get('/articles/:articleNames', function (req, res) {
     if(err){
            res.status(500).send(err.toString());
        }else{
-           if()
+           if(result.rows.length===0)
            {
-               
+               res.status(404).send('no article');
            }
            else{
-           var articledata=result.
+           var articledata=result.rows[0];
+    res.send(createht(articles[articleNames]));
        }}    
     });
-    res.send(createht(articles[articleNames]));
+    
 });
 
 app.get('/ui/style.css', function (req, res) {
