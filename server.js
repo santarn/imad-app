@@ -99,8 +99,19 @@ app.get('/submit',function(req,res){
     
 });
 
-app.get('/:articleNames', function (req, res) {
-    var articleNames=req.params.articleNames;
+app.get('/articles/:articleNames', function (req, res) {
+    pool.query("SELECT * FROM artice WHERE title='"+req.params.articlesNames+"'",function(err,result){
+    if(err){
+           res.status(500).send(err.toString());
+       }else{
+           if()
+           {
+               
+           }
+           else{
+           var articledata=result.
+       }}    
+    });
     res.send(createht(articles[articleNames]));
 });
 
