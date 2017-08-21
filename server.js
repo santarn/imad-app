@@ -66,7 +66,12 @@ app.get('/', function (req, res) {
 
 var config=
 {
-    user:'santoshjain2198'
+    user:'santoshjain2198',
+    database:'santoshjain2198',
+    host:'db.imad.hasura-app.io',
+    port:'5432',
+    password:process.env.DB_PASSWORD
+    
 };
 
 var counter=0;
