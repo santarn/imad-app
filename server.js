@@ -85,7 +85,7 @@ app.get('/articles/:articleNames', function (req, res) {
            }
            else{
            var articledata=result.rows[0];
-    res.send(createht(articles[articleNames]));
+    res.send(createht(articledata));
        }}    
     });
     
