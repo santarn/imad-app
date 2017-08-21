@@ -48,7 +48,7 @@ var htmltemp=`
     <hr/>
     <h1>${heading}</h1>
     <div>
-        ${date}
+        ${date.toDateString()}
     </div>
         
     <div>
