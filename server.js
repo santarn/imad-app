@@ -74,6 +74,22 @@ var config=
     
 };
 var pool=new Pool(config);
+app.get('/articles/:articleNames', function (req, res) {
+    pool.query("SELECT * FROM article WHERE title='"+req.params.articleNames+"'",function(err,result){
+    if(err){
+           res.status(500).send(err.toString());
+       }else{
+           if(result.rows.length===0)
+           {
+               res.status(404).send('no article');
+           }
+           else{
+           var articledata=result.rows[0];
+    res.send(createht(articles[articleNames]));
+       }}    
+    });
+    
+});
 
 app.get('/testdb',function(req,res){
    pool.query('SELECT * FROM test',function(err,result){
@@ -99,22 +115,6 @@ app.get('/submit',function(req,res){
     
 });
 
-app.get('/articles/:articleNames', function (req, res) {
-    pool.query("SELECT * FROM article WHERE title='"+req.params.articleNames+"'",function(err,result){
-    if(err){
-           res.status(500).send(err.toString());
-       }else{
-           if(result.rows.length===0)
-           {
-               res.status(404).send('no article');
-           }
-           else{
-           var articledata=result.rows[0];
-    res.send(createht(articles[articleNames]));
-       }}    
-    });
-    
-});
 
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
