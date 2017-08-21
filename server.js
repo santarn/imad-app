@@ -1,7 +1,7 @@
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
-var Pool=require('pg').POOL;
+var Pool=require('pg').Pool;
 
 var app = express();
 app.use(morgan('combined'));
@@ -63,6 +63,11 @@ var htmltemp=`
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
+
+var config=
+{
+    user:'santoshjain2198'
+};
 
 var counter=0;
 app.get('/counter', function (req, res) {
