@@ -7,10 +7,6 @@ var app = express();
 app.use(morgan('combined'));
 
 var articles={ 
-'article-one':{
-    title:'Article one | Santosh Jain',
-    heading:'Article One',
-    date:'15 sep 2000',
 
 function createht(data)
 {
