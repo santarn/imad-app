@@ -17,13 +17,6 @@ var articles={
     heading:'Article two',
     date:'15 oct 2000',
     content:'This is the content of article two'
-},
- 'article-three':{
-    title:'Article three | Santosh Jain',
-    heading:'Article three',
-    date:'15 sep 2020',
-    content:'This is the content of article three'
-}
 
 function createht(data)
 {
