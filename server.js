@@ -72,6 +72,16 @@ app.get('/articles/:articleNames', function (req, res) {
     
 });
 
+function hash(input,salt){
+    var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sho512');
+    return(hashed.toString('hex'));
+}
+
+app.get('/hash/:input',function(req,res){
+    var hashvalue=hash(req.params.input,'heyhey');
+    res.send(hashvalue);
+});
+
 app.get('/testdb',function(req,res){
    pool.query('SELECT * FROM test',function(err,result){
        if(err){
