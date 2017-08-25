@@ -20,10 +20,10 @@ for(var i=0;i<names.length;i++)
       }
         
     };
-var namel=document.getElementById('name');
-var name=namel.value;    
-   request.open('POST','http://santoshjain2198.imad.hasura-app.io/login,true);
-   request.send(null);
+var username=document.getElementById('username');
+var password=document.getElementById('password');
+   request.open('POST','http://santoshjain2198.imad.hasura-app.io/login',true);
+   request.send(JSON.stringify({username:username,password:password}));
    
    
 };
