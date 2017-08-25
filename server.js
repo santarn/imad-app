@@ -7,8 +7,7 @@ var bodyParser=require('body-parser');
 var app = express();
 app.use(morgan('combined')); 
 app.use(bodyParser.json());
-function createht(data)
-{
+function createht(data){
     var title=data.title;
     var heading=data.heading;
     var date=data.date;
@@ -84,7 +83,7 @@ app.post('/create-user',function(res,req){
     
     var salt=crypto.randomBytes(128).toString('hex');
     var dbstring=hash(password,salt);
-    pool.query('INSERT INTO "user" (username,passowrd) VALUES($1,$2)',[username,dbstring],function(err,result){
+    pool.query('INSERT INTO "user" (username,passowrd) VALUES($1,$2)', [username,dbstring],function(err,result){
          if(err){
            res.status(500).send(err.toString());
        }else{
