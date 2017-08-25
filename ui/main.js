@@ -8,6 +8,10 @@ subm.onclick=function(){
           if(request.status==200)
           {alert('INININININ');
           }
+          else
+          {
+              alert('kuch toh gadbad hai');
+          }
       }
         
     };
