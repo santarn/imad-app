@@ -4,6 +4,7 @@ var path = require('path');
 var Pool=require('pg').Pool;
 var crypto=require('crypto');
 var bodyParser=require('body-parser');
+
 var config=
 {
     user:'santoshjain2198',
@@ -13,6 +14,7 @@ var config=
     password:process.env.DB_PASSWORD
     
 };
+
 var app = express();
 app.use(morgan('combined')); 
 app.use(bodyParser.json());
@@ -54,8 +56,6 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
-
-var pool=new Pool(config);
 function hash(input,salt){
     var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
     return ["pbkdf2","10000",salt,hashed.toString('hex')].join('$');
@@ -74,6 +74,8 @@ app.post('/create-user',function(res,req){
        }
     });
 });
+var pool=new Pool(config);
+
 app.get('/articles/:articleNames', function (req, res) {
     pool.query("SELECT * FROM article WHERE title=$1",[req.params.articleNames],function(err,result){
     if(err){
