@@ -88,8 +88,7 @@ app.post('/create-user',function(res,req){
          if(err){
            res.status(500).send(err.toString());
        }else{
-           
-    res.send('user created successfully:'+username);
+           res.send('user created successfully:'+username);
        }
     });
 });
