@@ -55,23 +55,6 @@ var config=
     
 };
 var pool=new Pool(config);
-app.get('/articles/:articleNames', function (req, res) {
-    pool.query("SELECT * FROM article WHERE title=$1",[req.params.articleNames],function(err,result){
-    if(err){
-           res.status(500).send(err.toString());
-       }else{
-           if(result.rows.length===0)
-           {
-               res.status(404).send('no article');
-           }
-           else{
-           var articledata=result.rows[0];
-    res.send(createht(articledata));
-       }}    
-    });
-    
-});
-
 function hash(input,salt){
     var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
     return ["pbkdf2","10000",salt,hashed.toString('hex')].join('$');
@@ -91,6 +74,24 @@ app.post('/create-user',function(res,req){
        }
     });
 });
+app.get('/articles/:articleNames', function (req, res) {
+    pool.query("SELECT * FROM article WHERE title=$1",[req.params.articleNames],function(err,result){
+    if(err){
+           res.status(500).send(err.toString());
+       }else{
+           if(result.rows.length===0)
+           {
+               res.status(404).send('no article');
+           }
+           else{
+           var articledata=result.rows[0];
+    res.send(createht(articledata));
+       }}    
+    });
+    
+});
+
+
 
 app.get('/hash/:input',function(req,res){
     var hashvalue=hash(req.params.input,'heyhey');
