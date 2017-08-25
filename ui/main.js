@@ -22,7 +22,7 @@ for(var i=0;i<names.length;i++)
     };
 var namel=document.getElementById('name');
 var name=namel.value;    
-   request.open('GET','http://santoshjain2198.imad.hasura-app.io/submit?name='+name,true);
+   request.open('POST','http://santoshjain2198.imad.hasura-app.io/login,true);
    request.send(null);
    
    
