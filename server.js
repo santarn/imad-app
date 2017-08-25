@@ -18,6 +18,7 @@ var config=
 var app = express();
 app.use(morgan('combined')); 
 app.use(bodyParser.json());
+
 function createht(data){
     var title=data.title;
     var heading=data.heading;
@@ -66,6 +67,7 @@ app.get('/hash/:input',function(req,res){
 });
 app.post('/create-user',function(res,req){
     var password=req.body.password;
+    var username=req.body.username;
     var salt=crypto.randomBytes(128).toString('hex');
     var dbstring=hash(password,salt);
     pool.query('INSERT INTO "user" (username,password) VALUES ($1,$2)', [username,dbstring],function(err,result){
