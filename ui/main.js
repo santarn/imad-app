@@ -20,8 +20,8 @@ for(var i=0;i<names.length;i++)
       }
         
     };
-var username=document.getElementById('username');
-var password=document.getElementById('password');
+var username=document.getElementById('username').value;
+var password=document.getElementById('password').value;
    request.open('POST','http://santoshjain2198.imad.hasura-app.io/login',true);
    request.send(JSON.stringify({username:username,password:password}));
    
