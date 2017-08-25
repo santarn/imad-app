@@ -62,8 +62,8 @@ function hash(input,salt){
 }
 
 app.post('/create-user',function(res,req){
-    var username= req.body.username;
-    var password= req.body.password;
+    var username = req.body.username;
+    var password = req.body.password;
     var salt=crypto.randomBytes(128).toString('hex');
     var dbstring=hash(password,salt);
     pool.query('INSERT INTO "user" (username,passowrd) VALUES ($1,$2)', [username,dbstring],function(err,result){
