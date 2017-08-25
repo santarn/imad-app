@@ -77,6 +77,12 @@ function hash(input,salt){
     return ["pbkdf2","10000",salt,hashed.toString('hex')].join('$');
 }
 
+app.get('/create-user/',function(res,req){
+    var salt=crypto.getRandomBytes(128).toString('hex');
+    var dbstring=hash(password,salt);
+    pool.query('INSERT INTO ""')
+});
+
 app.get('/hash/:input',function(req,res){
     var hashvalue=hash(req.params.input,'heyhey');
     res.send(hashvalue);
