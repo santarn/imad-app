@@ -4,6 +4,15 @@ var path = require('path');
 var Pool=require('pg').Pool;
 var crypto=require('crypto');
 var bodyParser=require('body-parser');
+var config=
+{
+    user:'santoshjain2198',
+    database:'santoshjain2198',
+    host:'db.imad.hasura-app.io',
+    port:'5432',
+    password:process.env.DB_PASSWORD
+    
+};
 var app = express();
 app.use(morgan('combined')); 
 app.use(bodyParser.json());
@@ -45,15 +54,7 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
-var config=
-{
-    user:'santoshjain2198',
-    database:'santoshjain2198',
-    host:'db.imad.hasura-app.io',
-    port:'5432',
-    password:process.env.DB_PASSWORD
-    
-};
+
 var pool=new Pool(config);
 function hash(input,salt){
     var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
