@@ -60,7 +60,10 @@ function hash(input,salt){
     var hashed=crypto.pbkdf2Sync(input,salt,10000,512,'sha512');
     return ["pbkdf2","10000",salt,hashed.toString('hex')].join('$');
 }
-
+app.get('/hash/:input',function(req,res){
+    var hashvalue=hash(req.params.input,'heyhey');
+    res.send(hashvalue);
+});
 app.post('/create-user',function(res,req){
     var username = req.body.username;
     var password = req.body.password;
@@ -95,10 +98,7 @@ app.get('/articles/:articleNames', function (req, res) {
 
 
 
-app.get('/hash/:input',function(req,res){
-    var hashvalue=hash(req.params.input,'heyhey');
-    res.send(hashvalue);
-});
+
 
 app.get('/testdb',function(req,res){
    pool.query('SELECT * FROM test',function(err,result){
