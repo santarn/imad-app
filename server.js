@@ -81,6 +81,39 @@ app.post('/create-user',function(res,req){
        }
     });
 });
+
+app.post('/login',function(res,req){
+    //username,password
+    //JSON
+    //{"username":"santosh","password":"password"}
+    var password=req.body.password;
+    var username=req.body.username;
+    pool.query('SELECT * FROM "user" WHERE username=$1', [username],function(err,result){
+         if(err){
+           res.status(500).send(err.toString());
+       }else{
+           if(result.rows.length===0)
+           {
+               res.status(403).send('forbidden');
+           }
+           else{
+           var pw=result.rows[0].password;
+           var salt=pw.split('$')[2];
+           var hashed=hash(password,salt);
+           if(hashed===pw)
+           {
+               alert('loged in');
+           }
+           else
+           {
+               alert('invalid password');
+           }
+       }
+           
+       }
+    });
+});
+
 var pool=new Pool(config);
 
 app.get('/articles/:articleNames', function (req, res) {
