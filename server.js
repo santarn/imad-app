@@ -105,7 +105,7 @@ app.post('/login', function (req, res) {
       } else {
           if(result.rowslength===0)
           {
-              alert('invalid userid or password');
+              res.send('invalid userid or password');
           }
           else
           {
@@ -118,7 +118,7 @@ app.post('/login', function (req, res) {
            }
            else
            {
-               alert('invalid userid or password');
+               res.send('invalid userid or password');
            }
           }
       }
