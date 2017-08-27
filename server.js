@@ -119,7 +119,8 @@ app.post('/login', function (req, res) {
            {
               res.send("u are logged in");
            }
-           else{
+           else
+           {
                alert('invalid userid or password');
            }
           }
