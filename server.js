@@ -96,37 +96,7 @@ app.post('/create-user', function (req, res) {
    });
 });
 
-app.post('/login', function (req, res) {
-   // username, password
-   // {"username": "tanmai", "password": "password"}
-   // JSON
-   var username = req.body.username;
-   var password = req.body.password;
-   pool.query('SELECT * FROM "user" WHERE username=$1', [username], function (err, result) {
-      if (err) {
-          res.status(500).send(err.toString());
-      } else {
-          if(result.rowslength===0)
-          {
-              alert('invalid userid or password');
-          }
-          else
-          {
-              var dbstring=res.rows[0].password;
-              var salt=dbstring.split('$')[2];
-              var hashed=hash(passowrd,salt);
-           if(hashed===dbstring)
-           {
-              res.send("u are logged in");
-           }
-           else
-           {
-               alert('invalid userid or password');
-           }
-          }
-      }
-   });
-});
+
 
 var pool = new Pool(config);
 
