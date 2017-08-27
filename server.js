@@ -4,7 +4,7 @@ var path = require('path');
 var Pool=require('pg').Pool;
 var crypto=require('crypto');
 var bodyParser=require('body-parser');
-app.use(bodyParser.json());
+
 var config=
 {
     user:'santoshjain2198',
@@ -17,7 +17,7 @@ var config=
 
 var app = express();
 app.use(morgan('combined')); 
-
+app.use(bodyParser.json());
 
 function createht(data){
     var title=data.title;
