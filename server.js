@@ -160,6 +160,9 @@ app.get('/check-login',function(req,res){
    {
        res.send('user:'+req.session.auth.userId.toString());
    }
+   else{
+       res.send('not logged in');
+   }
 });
 
 
