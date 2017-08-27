@@ -165,6 +165,10 @@ app.get('/check-login',function(req,res){
    }
 });
 
+app.get('/check-login',function(req,res){
+   delete req.session.auth;
+});
+
 
 var pool = new Pool(config);
 
