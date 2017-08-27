@@ -96,6 +96,33 @@ app.post('/create-user', function (req, res) {
    });
 });
 
+app.post('/login', function (req, res) {
+   var username = req.body.username;
+   var password = req.body.password;
+   pool.query('SELECT * FROM "user" WHERE username=$1', [username], function (err, result) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+          if (result.rows.length === 0) {
+              res.status(403).send('username/password is invalid');
+          } else {
+              
+              var dbstring = result.rows[0].password;
+              var salt = dbstring.split('$')[2];
+              var hashedPassword = hash(passowrd,salt);
+              if(hashedPassword === dbstring) {
+                  
+                 res.send('credentials correct');
+           
+              } else {
+               res.status(403).send('invalid userid or password');
+           }
+          }
+      }
+   });
+});
+
+
 app.post('/logn', function (req, res) {
    var username = req.body.username;
    var password = req.body.password;
@@ -124,31 +151,6 @@ app.post('/logn', function (req, res) {
 });
 
 
-app.post('/login', function (req, res) {
-   var username = req.body.username;
-   var password = req.body.password;
-   pool.query('SELECT * FROM "user" WHERE username=$1', [username], function (err, result) {
-      if (err) {
-          res.status(500).send(err.toString());
-      } else {
-          if (result.rows.length === 0) {
-              res.status(403).send('username/password is invalid');
-          } else {
-              
-              var dbstring = result.rows[0].password;
-              var salt = dbstring.split('$')[2];
-              var hashedPassword = hash(passowrd,salt);
-              if(hashedPassword === dbstring) {
-                  
-                 res.send('credentials correct');
-           
-              } else {
-               res.status(403).send('invalid userid or password');
-           }
-          }
-      }
-   });
-});
 
 var pool = new Pool(config);
 
