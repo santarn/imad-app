@@ -19,6 +19,7 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(session({
     secret:'someRandomSecretValue',
+    cookie:{maxAge:1000*60*60*24*30}
 }));
 
 function createTemplate (data) {
@@ -143,7 +144,7 @@ app.post('/login', function (req, res) {
               var salt = dbString.split('$')[2];
               var hashedPassword = hash(password, salt); 
               if (hashedPassword === dbString) {
-            
+                req.session.auth={userId:result.rows[0].username};
                 res.send('credentials correct!');
                 
               } else {
@@ -154,6 +155,12 @@ app.post('/login', function (req, res) {
    });
 });
 
+app.get('/check-login',function(req,res){
+   if(req.session&&req.session.auth&&req.session.auth.userId)
+   {
+       res.send('user:'+req.session.auth.userId.toString());
+   }
+});
 
 
 var pool = new Pool(config);
