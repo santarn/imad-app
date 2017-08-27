@@ -131,21 +131,18 @@ app.post('/login', function (req, res) {
       if (err) {
           res.status(500).send(err.toString());
       } else {
-          if(result.rows.length===0)
-          {
-              res.status(403).send('invalid userid or password');
-          }
-          else
-          {
-              var dbstring=result.rows[0].password;
-              var salt=dbstring.split('$')[2];
-              var hashedpassword=hash(passowrd,salt);
-           if(hashedpassword===dbstring)
-           {
-              res.send("u are logged in");
-           }
-           else
-           {
+          if (result.rows.length === 0) {
+              res.status(403).send('username/password is invalid');
+          } else {
+              
+              var dbstring = result.rows[0].password;
+              var salt = dbstring.split('$')[2];
+              var hashedassword = hash(passowrd,salt);
+              if(hashedpassword === dbstring) {
+                  
+                 res.send('credentials correct');
+           
+              } else {
                res.status(403).send('invalid userid or password');
            }
           }
