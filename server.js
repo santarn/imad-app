@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var config = {
-    user: 'santoshjain2198',
-    database: 'santoshjain2198',
+    user: 'coco98',
+    database: 'coco98',
     host: 'db.imad.hasura-app.io',
     port: '5432',
     password: process.env.DB_PASSWORD
@@ -18,8 +18,8 @@ var app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(session({
-    secret:'someRandomSecretValue',
-    cookie:{maxAge:1000*60*60*24*30}
+    secret: 'someRandomSecretValue',
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 30}
 }));
 
 function createTemplate (data) {
@@ -101,33 +101,6 @@ app.post('/create-user', function (req, res) {
    });
 });
 
-//app.post('/login', function (req, res) {
-  // var username = req.body.username;
-   //var password = req.body.password;
-   //pool.query('SELECT * FROM "user" WHERE username=$1', [username], function (err, result) {
-     // if (err) {
-       //   res.status(500).send(err.toString());
-      //} else {
-        //  if (result.rows.length === 0) {
-          //    res.status(403).send('username/password is invalid');
-          //} else {
-              
-            //  var dbstring = result.rows[0].password;
-              //var salt = dbstring.split('$')[2];
-              //var hashedPassword = hash(passowrd,salt);
-              //if(hashedPassword === dbstring) {
-                  
-                // res.send('credentials correct');
-           
-             // } else {
-               //res.status(403).send('invalid userid or password');
-           //}
-          //}
-      //}
-   //});
-//});
-
-
 app.post('/login', function (req, res) {
    var username = req.body.username;
    var password = req.body.password;
@@ -139,12 +112,18 @@ app.post('/login', function (req, res) {
           if (result.rows.length === 0) {
               res.status(403).send('username/password is invalid');
           } else {
-             
+              // Match the password
               var dbString = result.rows[0].password;
               var salt = dbString.split('$')[2];
-              var hashedPassword = hash(password, salt); 
+              var hashedPassword = hash(password, salt); // Creating a hash based on the password submitted and the original salt
               if (hashedPassword === dbString) {
-                req.session.auth={userId:result.rows[0].username};
+                
+                // Set the session
+                req.session.auth = {userId: result.rows[0].id};
+                // set cookie with a session id
+                // internally, on the server side, it maps the session id to an object
+                // { auth: {userId }}
+                
                 res.send('credentials correct!');
                 
               } else {
@@ -155,26 +134,82 @@ app.post('/login', function (req, res) {
    });
 });
 
-app.get('/check-login',function(req,res){
-   if(req.session&&req.session.auth&&req.session.auth.userId)
-   {
-       res.send('user:'+req.session.auth.userId.toString());
-   }
-   else{
-       res.send('not logged in');
+app.get('/check-login', function (req, res) {
+   if (req.session && req.session.auth && req.session.auth.userId) {
+       // Load the user object
+       pool.query('SELECT * FROM "user" WHERE id = $1', [req.session.auth.userId], function (err, result) {
+           if (err) {
+              res.status(500).send(err.toString());
+           } else {
+              res.send(result.rows[0].username);    
+           }
+       });
+   } else {
+       res.status(400).send('You are not logged in');
    }
 });
 
-app.get('/logout',function(req,res){
+app.get('/logout', function (req, res) {
    delete req.session.auth;
-res.send('logout');
-    
+   res.send('<html><body>Logged out!<br/><br/><a href="/">Back to home</a></body></html>');
 });
-
 
 var pool = new Pool(config);
 
+app.get('/get-articles', function (req, res) {
+   // make a select request
+   // return a response with the results
+   pool.query('SELECT * FROM article ORDER BY date DESC', function (err, result) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+          res.send(JSON.stringify(result.rows));
+      }
+   });
+});
 
+app.get('/get-comments/:articleName', function (req, res) {
+   // make a select request
+   // return a response with the results
+   pool.query('SELECT comment.*, "user".username FROM article, comment, "user" WHERE article.title = $1 AND article.id = comment.article_id AND comment.user_id = "user".id ORDER BY comment.timestamp DESC', [req.params.articleName], function (err, result) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+          res.send(JSON.stringify(result.rows));
+      }
+   });
+});
+
+app.post('/submit-comment/:articleName', function (req, res) {
+   // Check if the user is logged in
+    if (req.session && req.session.auth && req.session.auth.userId) {
+        // First check if the article exists and get the article-id
+        pool.query('SELECT * from article where title = $1', [req.params.articleName], function (err, result) {
+            if (err) {
+                res.status(500).send(err.toString());
+            } else {
+                if (result.rows.length === 0) {
+                    res.status(400).send('Article not found');
+                } else {
+                    var articleId = result.rows[0].id;
+                    // Now insert the right comment for this article
+                    pool.query(
+                        "INSERT INTO comment (comment, article_id, user_id) VALUES ($1, $2, $3)",
+                        [req.body.comment, articleId, req.session.auth.userId],
+                        function (err, result) {
+                            if (err) {
+                                res.status(500).send(err.toString());
+                            } else {
+                                res.status(200).send('Comment inserted!')
+                            }
+                        });
+                }
+            }
+       });     
+    } else {
+        res.status(403).send('Only logged in users can comment');
+    }
+});
 
 app.get('/articles/:articleName', function (req, res) {
   // SELECT * FROM article WHERE title = '\'; DELETE WHERE a = \'asdf'
@@ -198,6 +233,6 @@ app.get('/ui/:fileName', function (req, res) {
 
 
 var port = 80; // Use 8080 for local development because you might already have apache running on 80
-app.listen(port, function () {
+app.listen(80, function () {
   console.log(`IMAD course app listening on port ${port}!`);
 });
